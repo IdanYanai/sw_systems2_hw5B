@@ -8,11 +8,14 @@ using namespace std;
 namespace ariel{
     class Iterator {
     private:
-        vector<int>* arr;
-        vector<int>::iterator pointer;
+        vector<int*>& arr;
+        unsigned int pointer;
 
     public:
         Iterator& operator=(const Iterator& other);
+
+        Iterator(vector<int*>& ref) : arr(ref) {}
+        Iterator(vector<int*>& ref, unsigned int ptr) : arr(ref), pointer(ptr) {}
         virtual ~Iterator() {}
 
         int operator*();
@@ -23,13 +26,13 @@ namespace ariel{
         bool operator>(const Iterator& other) const;
         bool operator<(const Iterator& other) const;
 
-        vector<int>::iterator begin();
-        vector<int>::iterator end();
+        Iterator begin();
+        Iterator end();
 
         // inline set, get
-        vector<int>* getArr() const {return arr;}
-        void setArr(vector<int>* arr) {this->arr = arr;}
-        vector<int>::iterator getPointer() const {return pointer;}
-        void setPointer(vector<int>::iterator pointer) {this->pointer=pointer;}
+        vector<int*>& getArr() const {return arr;}
+        void setArr(vector<int*>& arr) {this->arr = arr;}
+        unsigned int getPointer() const {return pointer;}
+        void setPointer(unsigned int pointer) {this->pointer=pointer;}
     };
 }

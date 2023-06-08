@@ -1,9 +1,9 @@
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
 #include "Iterator.hpp"
-#include "MagicalContainer.hpp"
 
 namespace ariel{
     Iterator& Iterator::operator=(const Iterator& other) {
@@ -12,7 +12,7 @@ namespace ariel{
         return *this;
     }
 
-    int Iterator::operator*() { return *pointer;}
+    int Iterator::operator*() { return *arr.at(pointer);}
     void Iterator::operator++() {++pointer;}
 
     bool Iterator::operator!=(const Iterator& other) const {
@@ -40,6 +40,6 @@ namespace ariel{
         return pointer < other.getPointer();
     }
 
-    vector<int>::iterator Iterator::begin() {return arr->begin();}
-    vector<int>::iterator Iterator::end() {return arr->end();}
+    Iterator Iterator::begin() {return Iterator(this->arr, (unsigned int)(0));}
+    Iterator Iterator::end() {return Iterator(this->arr, (unsigned int)(arr.size()));}
 }

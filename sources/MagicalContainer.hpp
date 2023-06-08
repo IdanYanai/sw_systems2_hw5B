@@ -11,9 +11,9 @@ namespace ariel{
     class MagicalContainer {
         private:
             vector<int> arr;
-            vector<int> ascending;
-            vector<int> prime;
-            vector<int> cross;
+            vector<int*> ascending;
+            vector<int*> prime;
+            vector<int*> cross;
 
         public:
             MagicalContainer();
@@ -25,40 +25,29 @@ namespace ariel{
 
             class AscendingIterator : public Iterator {
                 public:
-                    AscendingIterator(MagicalContainer container);
+                    AscendingIterator(MagicalContainer& container);
                     AscendingIterator(const AscendingIterator& toCopy);
             };
 
             class SideCrossIterator : public Iterator {
                 public:
-                    SideCrossIterator(MagicalContainer container);
+                    SideCrossIterator(MagicalContainer& container);
                     SideCrossIterator(const SideCrossIterator& toCopy);
             };
 
             class PrimeIterator : public Iterator {
                 public:
-                    PrimeIterator(MagicalContainer container);
+                    PrimeIterator(MagicalContainer& container);
                     PrimeIterator(const PrimeIterator& toCopy);
             };
 
-            // inline getters
-            vector<int>* getAscending() {return &ascending;}
-            vector<int>* getPrime() {return &prime;}
-            vector<int>* getCross() {return &cross;}
+            // inline getters ----------------------------------------------------------------
 
-            // static helper functions --------------------------------------------------------
+            vector<int*>& getAscending() {return ascending;}
+            vector<int*>& getPrime() {return prime;}
+            vector<int*>& getCross() {return cross;}
 
-            void crossSort(vector<int>& arr, vector<int> toSort) {
-                arr.resize(toSort.size(), 0);
-                for(unsigned int i=0;i<toSort.size(); i++) {
-                    if(i%2==0) {
-                        arr.at(i) = toSort.at(i/2);
-                    }
-                    else {
-                        arr.at(i) = toSort.at(toSort.size() - i/2 - 1);
-                    }
-                }
-            }
+            // inline helper functions --------------------------------------------------------
 
             bool isPrime(int num) {
                 for(int i=2;i<(num/2)+1;i++) {

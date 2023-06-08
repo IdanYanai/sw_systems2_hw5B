@@ -15,48 +15,62 @@ namespace ariel{
 
     void MagicalContainer::addElement(int num) {
         arr.push_back(num);
+        unsigned int n = arr.size();
 
-        if(MagicalContainer::isPrime(num)) {
-            prime.push_back(num);
-            sort(prime.begin(), prime.end());
+        // reset pointers
+        prime.clear();
+        ascending.clear();
+        for(unsigned int i=0;i<n;i++) {
+            if(MagicalContainer::isPrime(arr[i])) {
+                prime.push_back(&arr[i]);
+            }
+            ascending.push_back(&arr[i]);
         }
 
-        ascending.push_back(num);
-        sort(ascending.begin(), ascending.end());
+        // sort ascending with lambda function
+        sort(ascending.begin(), ascending.end(), [](int* a, int* b) {return *a<*b;});
 
-        MagicalContainer::crossSort(cross, arr);
+        // reset SideCross pointers and order
+        cross.clear();
+        for(unsigned int i=0;i<n; i++) {
+            if(i%2==0) {
+                cross.push_back(&arr[i/2]);
+            }
+            else {
+                cross.push_back(&arr[n - i/2 - 1]);
+            }
+        }
     }
     void MagicalContainer::removeElement(int num) {
+        auto it = find(arr.begin(), arr.end(), num);
+        if(it == arr.end()) {
+            throw invalid_argument("num to erase doesnt exist");
+        }
+
+        // first remove pointers
+        prime.erase(remove(prime.begin(), prime.end(), &(*it)), prime.end());
+        ascending.erase(remove(ascending.begin(), ascending.end(), &(*it)), ascending.end());
+        cross.erase(remove(cross.begin(), cross.end(), &(*it)), cross.end());
+
+        // then remove value
         arr.erase(remove(arr.begin(), arr.end(), num), arr.end());
-        prime.erase(remove(prime.begin(), prime.end(), num), prime.end());
-        ascending.erase(remove(ascending.begin(), ascending.end(), num), ascending.end());
-        cross.erase(remove(cross.begin(), cross.end(), num), cross.end());
     }
     int MagicalContainer::size() {return arr.size();}
 
     // Iterators -------------------------------------------------------------------
 
-    MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer container) {
-        setArr(container.getAscending());
-    }
-    MagicalContainer::AscendingIterator::AscendingIterator(const AscendingIterator& toCopy) {
-        setArr(toCopy.getArr());
-        setPointer(toCopy.getPointer());
-    }
+    MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer& container)
+    : Iterator(container.getAscending()) {setPointer(0);}
+    MagicalContainer::AscendingIterator::AscendingIterator(const AscendingIterator& toCopy)
+    : Iterator(toCopy.getArr()) {setPointer(toCopy.getPointer());}
 
-    MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer container) {
-        setArr(container.getCross());
-    }
-    MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator& toCopy) {
-        setArr(toCopy.getArr());
-        setPointer(toCopy.getPointer());
-    }
+    MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer& container)
+    : Iterator(container.getCross()) {setPointer(0);}
+    MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator& toCopy)
+    : Iterator(toCopy.getArr()) {setPointer(toCopy.getPointer());}
 
-    MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer container) {
-        setArr(container.getPrime());
-    }
-    MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator& toCopy) {
-        setArr(toCopy.getArr());
-        setPointer(toCopy.getPointer());
-    }
+    MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer& container)
+    : Iterator(container.getPrime()) {setPointer(0);}
+    MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator& toCopy)
+    : Iterator(toCopy.getArr()) {setPointer(toCopy.getPointer());}
 }
