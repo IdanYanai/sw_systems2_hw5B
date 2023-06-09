@@ -7,13 +7,21 @@ using namespace std;
 
 namespace ariel{
     Iterator& Iterator::operator=(const Iterator& other) {
-        this->arr = other.arr;
+        if(&this->arr != &other.arr) {
+            throw runtime_error("cannot assign to different container iterator");
+        }
         this->pointer = other.pointer;
         return *this;
     }
 
     int Iterator::operator*() { return *arr.at(pointer);}
-    void Iterator::operator++() {++pointer;}
+    Iterator& Iterator::operator++() {
+        if(pointer == arr.size()) {
+            throw runtime_error("max size already");
+        }
+        ++pointer;
+        return *this;
+    }
 
     bool Iterator::operator!=(const Iterator& other) const {
         if (typeid(*this) != typeid(other)) {
@@ -39,7 +47,4 @@ namespace ariel{
         }
         return pointer < other.getPointer();
     }
-
-    Iterator Iterator::begin() {return Iterator(this->arr, (unsigned int)(0));}
-    Iterator Iterator::end() {return Iterator(this->arr, (unsigned int)(arr.size()));}
 }

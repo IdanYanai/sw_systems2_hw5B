@@ -14,20 +14,16 @@ namespace ariel{
     public:
         Iterator& operator=(const Iterator& other);
 
-        Iterator(vector<int*>& ref) : arr(ref) {}
         Iterator(vector<int*>& ref, unsigned int ptr) : arr(ref), pointer(ptr) {}
         virtual ~Iterator() {}
 
         int operator*();
-        void operator++();
+        Iterator& operator++();
 
         bool operator!=(const Iterator& other) const;
         bool operator==(const Iterator& other) const;
         bool operator>(const Iterator& other) const;
         bool operator<(const Iterator& other) const;
-
-        Iterator begin();
-        Iterator end();
 
         // inline set, get
         vector<int*>& getArr() const {return arr;}

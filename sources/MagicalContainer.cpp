@@ -5,6 +5,7 @@
 using namespace std;
 
 #include "MagicalContainer.hpp"
+#include "Iterator.hpp"
 
 namespace ariel{
 
@@ -44,7 +45,7 @@ namespace ariel{
     void MagicalContainer::removeElement(int num) {
         auto it = find(arr.begin(), arr.end(), num);
         if(it == arr.end()) {
-            throw invalid_argument("num to erase doesnt exist");
+            throw runtime_error("num to erase doesnt exist");
         }
 
         // first remove pointers
@@ -60,17 +61,23 @@ namespace ariel{
     // Iterators -------------------------------------------------------------------
 
     MagicalContainer::AscendingIterator::AscendingIterator(MagicalContainer& container)
-    : Iterator(container.getAscending()) {setPointer(0);}
+    : Iterator(container.getAscending(), 0) {}
+    MagicalContainer::AscendingIterator::AscendingIterator(vector<int *>& ref, unsigned int pointer)
+    : Iterator(ref, pointer) {}
     MagicalContainer::AscendingIterator::AscendingIterator(const AscendingIterator& toCopy)
-    : Iterator(toCopy.getArr()) {setPointer(toCopy.getPointer());}
+    : Iterator(toCopy.getArr(), toCopy.getPointer()) {}
 
     MagicalContainer::SideCrossIterator::SideCrossIterator(MagicalContainer& container)
-    : Iterator(container.getCross()) {setPointer(0);}
+    : Iterator(container.getCross(), 0) {}
+    MagicalContainer::SideCrossIterator::SideCrossIterator(vector<int *> &ref, unsigned int pointer)
+    : Iterator(ref, pointer) {}
     MagicalContainer::SideCrossIterator::SideCrossIterator(const SideCrossIterator& toCopy)
-    : Iterator(toCopy.getArr()) {setPointer(toCopy.getPointer());}
+    : Iterator(toCopy.getArr(), toCopy.getPointer()) {}
 
     MagicalContainer::PrimeIterator::PrimeIterator(MagicalContainer& container)
-    : Iterator(container.getPrime()) {setPointer(0);}
+    : Iterator(container.getPrime(), 0) {}
+    MagicalContainer::PrimeIterator::PrimeIterator(vector<int *> &ref, unsigned int pointer)
+    : Iterator(ref, pointer) {}
     MagicalContainer::PrimeIterator::PrimeIterator(const PrimeIterator& toCopy)
-    : Iterator(toCopy.getArr()) {setPointer(toCopy.getPointer());}
+    : Iterator(toCopy.getArr(), toCopy.getPointer()) {}
 }
