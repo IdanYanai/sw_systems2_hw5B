@@ -30,15 +30,16 @@ namespace ariel{
 
         // sort ascending with lambda function
         sort(ascending.begin(), ascending.end(), [](int* a, int* b) {return *a<*b;});
+        sort(prime.begin(), prime.end(), [](int* a, int* b) {return *a<*b;});
 
         // reset SideCross pointers and order
         cross.clear();
         for(unsigned int i=0;i<n; i++) {
             if(i%2==0) {
-                cross.push_back(&arr[i/2]);
+                cross.push_back(ascending[i/2]);
             }
             else {
-                cross.push_back(&arr[n - i/2 - 1]);
+                cross.push_back(ascending[n - i/2 - 1]);
             }
         }
     }
